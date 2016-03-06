@@ -6,7 +6,7 @@ job         :
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
-widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+widgets     : [mathjax]     # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 ---
@@ -78,8 +78,6 @@ getChildHeight <- function(lmfit, newData) {
 - Similarly is the user specifies same sex couple, then the script states:
     
     "Unfortunately script doesn't work for same sex couples."
-
----
 
 
 

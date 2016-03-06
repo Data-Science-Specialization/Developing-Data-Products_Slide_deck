@@ -85,7 +85,5 @@ stdError <- round(in2cm(childHeightPrediction[1] - childHeightPrediction[2]),1)
     
     "Unfortunately script doesn't work for same sex couples."
 
----
-
 
 
