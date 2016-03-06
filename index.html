@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predicting child's height from parents' heights</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Predicting child's height from parents' heights">
+  <meta name="author" content="">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Predicting child's height from parents' heights</h1>
+    <h2>Quick and dirty Shiny app for Coursera DDP course</h2>
+    <p><br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>What does it do?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>User provides his/her, as well as partner&#39;s or hypothetical partner&#39;s height and sex</li>
+<li>The app uses <em>father.son</em> dataset from <strong>UsingR</strong> package to build a simple linear regression model</li>
+<li>Child&#39;s height prediction is obtained from parents&#39; adjusted average height and is output on the screen together with the prediction error and the accompanying plot</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Inner workings of the app</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The linear prediction model is built using the following command:</li>
+</ul>
+
+<pre><code class="r">fit &lt;- lm(sheight~fheight,data=father.son)
+</code></pre>
+
+<ul>
+<li>This results in a model with the following coefficients:</li>
+</ul>
+
+<pre><code>##              Estimate Std. Error  t value     Pr(&gt;|t|)
+## (Intercept) 33.886604 1.83235382 18.49348 1.604044e-66
+## fheight      0.514093 0.02704874 19.00618 1.121268e-69
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Inner workings of the app (contd.)</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>User inputs their sex and height as well as their partner&#39;s sex and height</li>
+<li>Heights are input in centimeters and the prediction result is in centimeters too, while the dataset is in inches</li>
+<li>To provide conversion between units, two functions are implemented:</li>
+</ul>
+
+<pre><code class="r">in2cm &lt;- function(inches) {inches/0.39370}
+cm2in &lt;- function(cm) {cm * 0.39370}
+</code></pre>
+
+<ul>
+<li>Female parent&#39;s height is adjusted with multiplication by 1.08 and midheight of the two parents is calculated inside a function and then subsequently used to predict child&#39;s height with:</li>
+</ul>
+
+<pre><code class="r">getChildHeight &lt;- function(lmfit, newData) {
+    predict(lmfit, data.frame(fheight = c(newData)), interval = &quot;prediction&quot;)
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Suppose user is female and is 160 cm high, while their partner is male and is 180 cm high</p></li>
+<li><p>Parents&#39; adjusted average height is then 176.4 cm.</p></li>
+<li><p>Child&#39;s predicted height is then 176.8 +/- 12.2 cm.</p></li>
+<li><p>If the user inputs heights such that the adjusted average height is outside of the data cloud, then the script outputs the following message:</p>
+
+<p>&quot;PREDICTION UNRELIABLE, IT IS OUTSIDE OF THE DATA CLOUD!&quot;</p></li>
+<li><p>Similarly is the user specifies same sex couple, then the script states:</p>
+
+<p>&quot;Unfortunately script doesn&#39;t work for same sex couples.&quot;</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='What does it do?'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Inner workings of the app'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Inner workings of the app (contd.)'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Example'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='NA'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
